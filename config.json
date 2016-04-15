@@ -1,0 +1,17 @@
+{
+	"name":"Classement faction",
+	"slug":"factionranking",
+	"nav":true,
+	"admin":true,
+	"author":"Eywek",
+	"version":"0.2.0",
+	"apiID":4,
+	"useEvents":false,
+	"permissions" : {
+		"available" : [],
+		"default" : {}
+	},
+	"requirements" : {
+		"CMS" : ">= 1.0.0"
+	}
+}
