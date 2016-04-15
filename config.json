@@ -3,6 +3,8 @@
 	"slug":"factionranking",
 	"nav":true,
 	"admin":true,
+	"admin_route":"/admin/factions",
+	"admin_name":"Classement faction",
 	"author":"Eywek",
 	"version":"0.2.0",
 	"apiID":4,
