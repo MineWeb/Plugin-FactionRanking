@@ -1,4 +1,4 @@
 <?php
 class FactionRankingAppModel extends AppModel {
-  public $tablePrefix = 'rankingfaction__';
+  public $tablePrefix = 'factionranking__';
 }
