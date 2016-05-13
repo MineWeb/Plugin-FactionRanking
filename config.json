@@ -1,12 +1,12 @@
 {
 	"name":"Classement faction",
-	"slug":"factionranking",
+	"slug":"factions",
 	"nav":true,
 	"admin":true,
 	"admin_route":"/admin/factions",
 	"admin_name":"Classement faction",
 	"author":"Eywek",
-	"version":"0.2.0",
+	"version":"0.2.1",
 	"apiID":4,
 	"useEvents":false,
 	"permissions" : {

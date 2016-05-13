@@ -59,7 +59,7 @@ class RankingController extends AppController{
 			if(!$cache || $cache && !file_exists($cache_folder.$cache_filename) || strtotime('+ '.$cache.' hours', filemtime($cache_folder.$cache_filename)) < time()) {
 				$factions = $this->Server->call(array('getAllFactions' => 'server'), 1, true);
 
-				if(isset($factions['getAllFactions']) && $factions['getAllFactions'] != "none") {
+				if(isset($factions['getAllFactions']) && $factions['getAllFactions'] != "none" && $factions['getAllFactions'] != "PLUGIN_NOT_FOUND") {
 
 					App::import('FactionRanking.Vendor', 'MinecraftColors');
 
