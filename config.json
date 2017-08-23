@@ -6,7 +6,7 @@
 	"admin_route":"/admin/factions",
 	"admin_name":"Classement faction",
 	"author":"Eywek",
-	"version":"0.2.1",
+	"version":"0.2.2",
 	"apiID":4,
 	"useEvents":false,
 	"permissions" : {
