@@ -57,7 +57,7 @@ class RankingController extends AppController{
 			// Appelée par la dataTable après le chargement de la page, on lui renvoie du JS avec les données qu'on a.
 			// Get factions
 			if(!$cache || $cache && !file_exists($cache_folder.$cache_filename) || strtotime('+ '.$cache.' hours', filemtime($cache_folder.$cache_filename)) < time()) {
-				$factions = $this->Server->call(array('getAllFactions' => 'server'), 1, true);
+				$factions = $this->Server->call(array('getAllFactions' => 'server'), true, $config['serverid']);
 
 				if(isset($factions['getAllFactions']) && $factions['getAllFactions'] != "none" && $factions['getAllFactions'] != "PLUGIN_NOT_FOUND") {
 
