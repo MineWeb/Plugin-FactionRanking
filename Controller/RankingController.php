@@ -50,8 +50,7 @@ class RankingController extends AppController{
 
 		$this->set(compact('affich'));
 		$this->set('cache_time', $cache);
-
-
+        
 		if (!$this->request->is('ajax'))
 		    return;
         $this->autoRender = false;
