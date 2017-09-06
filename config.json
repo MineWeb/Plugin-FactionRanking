@@ -1,12 +1,19 @@
 {
 	"name":"Classement faction",
 	"slug":"factions",
-	"nav":true,
-	"admin":true,
-	"admin_route":"/admin/factions",
-	"admin_name":"Classement faction",
+	"admin_menus": {
+      "GLOBAL__CUSTOMIZE": {
+        "Classement factions": {
+          "icon": "table",
+          "route": "/admin/factions"
+        }
+      }
+	},
+	"navbar_routes": {
+		"Classement factions": "/factions"
+	},
 	"author":"Eywek",
-	"version":"0.2.1",
+	"version":"1.0.0",
 	"apiID":4,
 	"useEvents":false,
 	"permissions" : {
@@ -14,6 +21,6 @@
 		"default" : {}
 	},
 	"requirements" : {
-		"CMS" : ">= 1.0.0"
+		"CMS" : "^1.2.0"
 	}
 }

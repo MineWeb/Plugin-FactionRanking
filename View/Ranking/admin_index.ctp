@@ -18,7 +18,6 @@
                 <option value="name"<?= (in_array('name', $data['affich'])) ? ' selected' : '' ?>><?= $Lang->get('RANKING_FACTION__AFFICH_NAME') ?></option>
                 <option value="description"<?= (in_array('description', $data['affich'])) ? ' selected' : '' ?>><?= $Lang->get('RANKING_FACTION__AFFICH_DESCRIPTION') ?></option>
                 <option value="players"<?= (in_array('players', $data['affich'])) ? ' selected' : '' ?>><?= $Lang->get('RANKING_FACTION__AFFICH_PLAYERS') ?></option>
-                <option value="officers"<?= (in_array('officers', $data['affich'])) ? ' selected' : '' ?>><?= $Lang->get('RANKING_FACTION__AFFICH_OFFICERS') ?></option>
                 <option value="leader"<?= (in_array('leader', $data['affich'])) ? ' selected' : '' ?>><?= $Lang->get('RANKING_FACTION__AFFICH_LEADER') ?></option>
                 <option value="power"<?= (in_array('power', $data['affich'])) ? ' selected' : '' ?>><?= $Lang->get('RANKING_FACTION__AFFICH_POWER') ?></option>
                 <option value="claims"<?= (in_array('claims', $data['affich'])) ? ' selected' : '' ?>><?= $Lang->get('RANKING_FACTION__AFFICH_CLAIMS') ?></option>

@@ -84,7 +84,7 @@
         'columns': [
             { "data" : "position"},
             <?php foreach ($affich as $key => $value) {
-                if($value == "leader" || $value == "officers") {
+                if($value == "leader") {
                     echo '{ data : "'.$value.'[, ]"},';
                 } else {
                     echo '{ data : "'.$value.'"},';

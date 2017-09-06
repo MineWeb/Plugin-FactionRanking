@@ -52,135 +52,74 @@ class RankingController extends AppController{
 		$this->set('cache_time', $cache);
 
 
-		if($this->request->is('ajax')) {
-			$this->autoRender = false;
-			// Appelée par la dataTable après le chargement de la page, on lui renvoie du JS avec les données qu'on a.
-			// Get factions
-			if(!$cache || $cache && !file_exists($cache_folder.$cache_filename) || strtotime('+ '.$cache.' hours', filemtime($cache_folder.$cache_filename)) < time()) {
-				$factions = $this->Server->call(array('getAllFactions' => 'server'), 1, true);
+		if (!$this->request->is('ajax'))
+		    return;
+        $this->autoRender = false;
+        $this->response->type('json');
+        if ($cache && file_exists($cache_folder.$cache_filename) && strtotime('+ '.$cache.' hours', filemtime($cache_folder.$cache_filename)) > time())
+            return $this->response->body(file_get_contents($cache_folder.$cache_filename));
 
-				if(isset($factions['getAllFactions']) && $factions['getAllFactions'] != "none" && $factions['getAllFactions'] != "PLUGIN_NOT_FOUND") {
+        $factions = $this->Server->call('GET_FACTIONS', $config['serverid']);
+        if (!$factions || !isset($factions['GET_FACTIONS']) || empty($factions['GET_FACTIONS']))
+            return $this->response->body(json_encode([]));
 
-					App::import('FactionRanking.Vendor', 'MinecraftColors');
+        App::import('FactionRanking.Vendor', 'MinecraftColors');
+        $data = [];
+        foreach ($factions['GET_FACTIONS'] as $faction) {
+            if (in_array($faction['name'], $factions_ignored))
+                continue;
+            $data[$faction['name']] = [
+                'name' => $faction['name'],
+                'players' => count($faction['players']),
+                'players_pseudo' => $faction['players'],
+                'leader' => [$faction['leader']],
+                'power' => $faction['power']['current'],
+                'description' => MinecraftColors::convertToHTML($faction['description']),
+                'claims' => $faction['claims_count'],
+                'points' => 0
+            ];
 
-					$factions = explode(', ', $factions['getAllFactions']);
-					foreach ($factions as $key => $factionName) {
+            if (is_array($calcul_points))
+                foreach ($calcul_points as $value)
+                    $data[$faction['name']]['points'] = $data[$faction['name']]['points'] + intval($data[$faction['name']][$value]);
+            else
+                $data[$faction['name']]['points'] = $data[$faction['name']][$calcul_points];
 
-						if(!in_array($factionName, $factions_ignored)) { // si la faction ne doit pas être ignorée
+        }
 
-							// On fais la requête
-							$serverData = $this->Server->call(array(
-								'getFactionPlayers' => $factionName,
-								'getFactionOfficers' => $factionName,
-								'getFactionLeader' => $factionName,
-								'getFactionPowers' => $factionName,
-								'getFactionDescription' => $factionName,
-	 							'getFactionClaims' => $factionName
-							), true, $config['serverid']);
+        // on classe les factions
+        usort($data, function($a, $b){
+            return $a['points'] < $b['points'];
+        });
 
-							// les infos
-							$data[$factionName]['name'] = $factionName;
+        $pos = 0;
+        foreach ($data as $key => $value) {
+            $pos++;
+            $data['data'][$key] = $value;
+            if (in_array('players', $affich)) {
+                if ($data[$key]['players'] > 0)
+                    $data['data'][$key]['players'] = $data[$key]['players'].' &nbsp;&nbsp;<button type="button" class="btn btn-info btn-xs" data-container="body" data-toggle="popover" data-placement="top" data-content="'.implode(', ', $data[$key]['players_pseudo']).'">'.$this->Lang->get('RANKING_FACTION__VIEW').'</button>';
+                else
+                    $data['data'][$key]['players'] = $this->Lang->get('RANKING_FACTION__NO_PLAYER');
+            } else {
+                unset($data['data'][$key]['players']);
+                unset($data['data'][$key]['players_pseudo']);
+            }
+            if (!in_array('leader', $affich))
+                unset($data['data'][$key]['leader']);
+            if (!in_array('power', $affich))
+                unset($data['data'][$key]['power']);
+            if (!in_array('description', $affich))
+                unset($data['data'][$key]['description']);
+            if (!in_array('claims', $affich))
+                unset($data['data'][$key]['claims']);
+            $data['data'][$key]['position'] = $pos;
+            unset($data[$key]);
+        }
 
-							if(isset($serverData['getFactionPlayers']) && $serverData['getFactionPlayers'] != 'none') {
-								$players = $serverData['getFactionPlayers'];
-								$data[$factionName]['players'] = count(explode(', ', $players));
-								$data[$factionName]['players_pseudo'] = explode(', ', $players);
-							} else {
-								$data[$factionName]['players'] = 0;
-								$data[$factionName]['players_pseudo'] = array();
-							}
-
-							if(isset($serverData['getFactionOfficers']) && $serverData['getFactionOfficers'] != 'none') {
-								$officers = $serverData['getFactionOfficers'];
-								$data[$factionName]['officers'] = explode(', ', $officers);
-							} else {
-								$data[$factionName]['officers'] = array();
-							}
-
-							if(isset($serverData['getFactionLeader']) && $serverData['getFactionLeader'] != 'none') {
-								$leader = $serverData['getFactionLeader'];
-								$data[$factionName]['leader'] = explode(', ', $leader);
-							} else {
-								$data[$factionName]['leader'] = array();
-							}
-
-							$data[$factionName]['power'] = (isset($serverData['getFactionPowers'])) ? $serverData['getFactionPowers'] : 0;
-
-							$data[$factionName]['description'] = (isset($serverData['getFactionDescription'])) ? $serverData['getFactionDescription'] : '';
-							// Parsage de couleurs
-							$data[$factionName]['description'] = MinecraftColors::convertToHTML($data[$factionName]['description']);
-
-							$data[$factionName]['claims'] = (isset($serverData['getFactionClaims'])) ? $serverData['getFactionClaims'] : 0;
-
-							// calcul des points
-							$data[$factionName]['points'] = 0;
-
-							if(is_array($calcul_points)) { // si on doit additioner plusieurs données
-
-								foreach ($calcul_points as $k => $v) {
-									$data[$factionName]['points'] = $data[$factionName]['points'] + intval($data[$factionName][$v]);
-								}
-
-							} else { // sinon c'est avec une seule donnée
-								$data[$factionName]['points'] = $data[$factionName][$calcul_points];
-							}
-
-						}
-					}
-					// on classe les factions
-					usort($data, function($a, $b){
-						return $a['points'] < $b['points'];
-					});
-
-					$i = 0;
-					foreach ($data as $key => $value) {
-						$i++;
-						$data['data'][$key] = $value;
-						if(in_array('players', $affich)) {
-							if($data[$key]['players'] > 0) {
-								$data['data'][$key]['players'] = $data[$key]['players'].' &nbsp;&nbsp;<button type="button" class="btn btn-info btn-xs" data-container="body" data-toggle="popover" data-placement="top" data-content="'.implode(', ', $data[$key]['players_pseudo']).'">'.$this->Lang->get('RANKING_FACTION__VIEW').'</button>';
-							} else {
-								$data['data'][$key]['players'] = $this->Lang->get('RANKING_FACTION__NO_PLAYER');
-							}
-						} else {
-							unset($data['data'][$key]['players']);
-							unset($data['data'][$key]['players_pseudo']);
-						}
-						if(!in_array('officers', $affich)) {
-							unset($data['data'][$key]['officers']);
-						}
-						if(!in_array('leader', $affich)) {
-							unset($data['data'][$key]['leader']);
-						}
-						if(!in_array('power', $affich)) {
-							unset($data['data'][$key]['power']);
-						}
-						if(!in_array('description', $affich)) {
-							unset($data['data'][$key]['description']);
-						}
-						if(!in_array('claims', $affich)) {
-							unset($data['data'][$key]['claims']);
-						}
-						$data['data'][$key]['position'] = $i;
-						unset($data[$key]);
-					}
-
-					if($cache) {
-						file_put_contents($cache_folder.$cache_filename, json_encode($data));
-					}
-
-				} else {
-					$data = array();
-					$this->log('FactionRankingPlugin : Factions not found');
-				}
-
-			} else {
-				$data = json_decode(file_get_contents($cache_folder.$cache_filename), true);
-			}
-
-			echo json_encode($data);
-		}
-
+        if ($cache)
+            file_put_contents($cache_folder.$cache_filename, json_encode($data));
+        return $this->response->body(json_encode($data));
 	}
 
 	function admin_index() {

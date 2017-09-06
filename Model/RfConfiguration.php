@@ -3,7 +3,7 @@ class RfConfiguration extends FactionRankingAppModel {
 
   public $defaultConfig = array(
     'cache' => 0,
-    'affich' => array('name', 'description', 'players', 'leader', 'officers', 'power', 'claims', 'points'),
+    'affich' => array('name', 'description', 'players', 'leader', 'power', 'claims', 'points'),
     'calcul_points' => array('players', 'power', 'claims'),
     'serverid' => 1
   );
