@@ -13,7 +13,7 @@
 		"Classement factions": "/factions"
 	},
 	"author":"Eywek",
-	"version":"1.0.0",
+	"version":"1.0.1",
 	"apiID":4,
 	"useEvents":false,
 	"permissions" : {
