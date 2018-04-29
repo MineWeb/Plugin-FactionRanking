@@ -1,4 +1,6 @@
-Installation du plugin FactionRanking (Via le FTP) :
+➤ Description : Le plugin FactionRanking ajoute un classement faction sur votre site, permettant à vos joueurs de connaître la plus grosse faction du serveur (VotreSite/factionranking).
+
+• Installation du plugin FactionRanking (Via le FTP) :
 1. Cliquez sur "Clone or download" sur la page "https://github.com/MineWeb/Plugin-FactionRanking".
 2. Téléchargez et enregistrez le ZIP, puis extrayez le.
 3. Renommez le fichier "Plugin-FactionRanking-master" par "FactionRanking".
@@ -6,9 +8,9 @@ Installation du plugin FactionRanking (Via le FTP) :
 5. Supprimez tous les fichiers dans le "/app/tmp/cache" de votre FTP.
 6. Installation effectuée.
 
-Installation du plugin FactionRanking (Via le Site) :
+• Installation du plugin FactionRanking (Via le Site) :
 1. Rendez-vous à l'adresse "VotreSite/admin/plugin".
-2. Choisissez le plugin que vous voulez dans le tableau "Plugins gratuits et achetés disponibles".
+2. Cherchez le plugin "FactionRanking" dans le tableau "Plugins gratuits et achetés disponibles".
 3. Cliquez sur "Installer" pour installer le plugin sur votre site.
 4. Supprimez tous les fichiers dans le "/app/tmp/cache" de votre FTP.
 5. Installation effectuée.
