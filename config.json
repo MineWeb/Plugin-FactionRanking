@@ -2,7 +2,7 @@
 	"name":"Classement faction",
 	"slug":"factions",
 	"admin_menus": {
-      "GLOBAL__CUSTOMIZE": {
+      "GLOBAL__ADMIN_PLUGINS": {
         "Classement factions": {
           "icon": "table",
           "route": "/admin/factions"
@@ -13,8 +13,7 @@
 		"Classement factions": "/factions"
 	},
 	"author":"Eywek",
-	"version":"1.0.1",
-	"apiID":4,
+	"version":"1.0.2",
 	"useEvents":false,
 	"permissions" : {
 		"available" : [],
