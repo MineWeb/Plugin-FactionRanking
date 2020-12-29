@@ -1,25 +1,25 @@
 {
-	"name":"Classement faction",
-	"slug":"factions",
+	"name": "Classement faction",
+	"author": "Eywek",
+	"version": "1.0.3",
+	"slug": "factions",
 	"admin_menus": {
-      "GLOBAL__ADMIN_PLUGINS": {
-        "Classement factions": {
-          "icon": "table",
-          "route": "/admin/factions"
-        }
-      }
+		"GLOBAL__ADMIN_PLUGINS": {
+			"Classement factions": {
+				"icon": "table",
+				"route": "/admin/factions"
+			}
+		}
 	},
 	"navbar_routes": {
 		"Classement factions": "/factions"
 	},
-	"author":"Eywek",
-	"version":"1.0.2",
-	"useEvents":false,
-	"permissions" : {
-		"available" : [],
-		"default" : {}
+	"useEvents": false,
+	"permissions": {
+		"available": [],
+		"default": {}
 	},
-	"requirements" : {
-		"CMS" : "^1.2.0"
+	"requirements": {
+		"CMS": "^1.11.0"
 	}
 }
